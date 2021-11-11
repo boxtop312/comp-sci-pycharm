@@ -32,7 +32,8 @@ global wrong
 wrong = 0
 global winword
 winword = ""
-
+global game
+game = 0
 
 def dash_generator():
     dashlist = []
@@ -52,17 +53,18 @@ def sentance_checker(event):
     global wrong
     guess = word_enter.get()
     if wrong == 6:
-        print("You failed hangman the word was " + Chosen_word)
-        return quit()
-    else:
+        hangman_img.config(image = img7)
+        game_set.config(text = ("You failed hangman the word was " + Chosen_word))
+    elif game == 0:
         if guess in usedlist:
-            print("You have already guessed this word")
+            pass
         else:
             usedlist.append(str(guess))
             for i in range(len(Chosen_word)): # checks if the guess is in the word and does the appropriate actions
                 if guess in Chosen_word[i]:
                     dashlist[i] = guess
                     generated_dashes = ("").join(dashlist)
+                    win_checker()
                 elif guess not in Chosen_word:
                     wrong += 1
                     guess_label.config(text = ", ".join(usedlist))
@@ -74,6 +76,11 @@ def sentance_checker(event):
                         hangman_img.config(image = img4)
                     elif wrong == 4:
                         hangman_img.config(image = img5)
+                    elif wrong == 5:
+                        hangman_img.config(image = img6)
+    else:
+        bg = "green"
+        game_set.config(text = "you won")
 
 
 def start_game():
@@ -88,7 +95,18 @@ def start_game():
     wrong = 0
     global winword
     winword = ""
+    global game
+    game = 0
 
+
+def win_checker():
+    global game
+    winword = ""
+    for i in range(len(dashlist)):
+        winword += dashlist[i]
+        if winword == Chosen_word:
+            game = 1
+        winword = ""
 
 
 # CONTROLLER #
@@ -110,7 +128,7 @@ word_label.place(x = 250, y = 50, width = 250)
 guess_label = Label(root, fg = "black", text = "_________", font = ("Lobster 1.4", 15))
 guess_label.place(x = 10, y = 100, width = 300)
 
-incorrect_guesses = Label(root, fg = "black", text = ("incorrect guesses: " + str(wrong)), font = ("Lobster 1.4", 10))
+incorrect_guesses = Label(root, fg = "black", text = ("incorrect guesses: " + wrong), font = ("Lobster 1.4", 10))
 incorrect_guesses.place(x = 10, y = 123, width = 100)
 
 game_set = Label(root, fg = "black", text = "", font = ("Lobster 1.4", 15))
