@@ -26,7 +26,7 @@ wordbank = words.read() #stores contents of txt file in variable
 wordbank = wordbank.split() #place words into a list.
 A = random.randint(1,58110)
 global Chosen_word
-Chosen_word = wordbank[A]
+Chosen_word = "moo"#wordbank[A]
 usedlist = []
 global wrong
 wrong = 0
@@ -52,6 +52,7 @@ def sentance_checker(event):
     global Chosen_word
     global wrong
     guess = word_enter.get()
+    win_checker()
     if wrong == 6:
         hangman_img.config(image = img7)
         game_set.config(text = ("You failed hangman the word was " + Chosen_word))
@@ -67,6 +68,7 @@ def sentance_checker(event):
                     win_checker()
                 elif guess not in Chosen_word:
                     wrong += 1
+                    incorrect_guesses.config(text = ("incorrect guesses: " + str(wrong)))
                     guess_label.config(text = ", ".join(usedlist))
                     if wrong == 1:
                         hangman_img.config(image = img2)
@@ -97,6 +99,7 @@ def start_game():
     winword = ""
     global game
     game = 0
+    incorrect_guesses.config(text=("incorrect guesses: " + str(wrong)))
 
 
 def win_checker():
@@ -128,7 +131,7 @@ word_label.place(x = 250, y = 50, width = 250)
 guess_label = Label(root, fg = "black", text = "_________", font = ("Lobster 1.4", 15))
 guess_label.place(x = 10, y = 100, width = 300)
 
-incorrect_guesses = Label(root, fg = "black", text = ("incorrect guesses: " + wrong), font = ("Lobster 1.4", 10))
+incorrect_guesses = Label(root, fg = "black", text = ("incorrect guesses: " + str(wrong)), font = ("Lobster 1.4", 10))
 incorrect_guesses.place(x = 10, y = 123, width = 100)
 
 game_set = Label(root, fg = "black", text = "", font = ("Lobster 1.4", 15))
