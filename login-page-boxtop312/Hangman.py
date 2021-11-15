@@ -26,7 +26,7 @@ wordbank = words.read() #stores contents of txt file in variable
 wordbank = wordbank.split() #place words into a list.
 A = random.randint(1,58110)
 global Chosen_word
-Chosen_word = "moo"#wordbank[A]
+Chosen_word = wordbank[A]
 usedlist = []
 global wrong
 wrong = 0
@@ -36,59 +36,60 @@ global game
 game = 0
 
 def dash_generator():
+    global dashlist
     dashlist = []
+    global generated_dashes
     for i in range(len(Chosen_word)):
         dashlist.append("_ ")
     generated_dashes = ("").join(dashlist)
 
 
-dashlist = []
-for i in range(len(Chosen_word)):
-    dashlist.append("_ ")
-generated_dashes = ("").join(dashlist)
+dash_generator()
 
 
 def sentance_checker(event):
     global Chosen_word
     global wrong
+    global game
     guess = word_enter.get()
     win_checker()
     if wrong == 6:
         hangman_img.config(image = img7)
         game_set.config(text = ("You failed hangman the word was " + Chosen_word))
     elif game == 0:
-        if guess in usedlist:
-            pass
-        else:
+        if guess not in usedlist:
             usedlist.append(str(guess))
-            for i in range(len(Chosen_word)): # checks if the guess is in the word and does the appropriate actions
-                if guess in Chosen_word[i]:
-                    dashlist[i] = guess
-                    generated_dashes = ("").join(dashlist)
-                    win_checker()
-                elif guess not in Chosen_word:
-                    wrong += 1
-                    incorrect_guesses.config(text = ("incorrect guesses: " + str(wrong)))
-                    guess_label.config(text = ", ".join(usedlist))
-                    if wrong == 1:
-                        hangman_img.config(image = img2)
-                    elif wrong == 2:
-                        hangman_img.config(image = img3)
-                    elif wrong == 3:
-                        hangman_img.config(image = img4)
-                    elif wrong == 4:
-                        hangman_img.config(image = img5)
-                    elif wrong == 5:
-                        hangman_img.config(image = img6)
-    else:
-        bg = "green"
-        game_set.config(text = "you won")
+            if guess in Chosen_word:
+                for i in range(len(Chosen_word)): # checks if the guess is in the word and does the appropriate actions
+                    if guess in Chosen_word[i]:
+                        dashlist[i] = guess
+                        generated_dashes = ("").join(dashlist)
+                        word_label.config(text = generated_dashes)
+                        win_checker()
+                        if game == 1:
+                            bg = "green"
+                            game_set.config(text="you won")
+            elif guess not in Chosen_word:
+                wrong += 1
+                incorrect_guesses.config(text = ("incorrect guesses: " + str(wrong)))
+                guess_label.config(text = ", ".join(usedlist))
+                if wrong == 1:
+                    hangman_img.config(image = img2)
+                elif wrong == 2:
+                    hangman_img.config(image = img3)
+                elif wrong == 3:
+                    hangman_img.config(image = img4)
+                elif wrong == 4:
+                    hangman_img.config(image = img5)
+                elif wrong == 5:
+                    hangman_img.config(image = img6)
 
 
 def start_game():
+    dash_generator()
     hangman_img.config(image = img1)
     guess_label.config(text = "_________")
-    dash_generator()
+    game_set.config(text = "")
     A = random.randint(1, 58110)
     global Chosen_word
     Chosen_word = wordbank[A]
@@ -109,7 +110,7 @@ def win_checker():
         winword += dashlist[i]
         if winword == Chosen_word:
             game = 1
-        winword = ""
+    winword = ""
 
 
 # CONTROLLER #
