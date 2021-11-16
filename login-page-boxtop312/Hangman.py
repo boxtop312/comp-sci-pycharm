@@ -86,10 +86,6 @@ def sentance_checker(event):
 
 
 def start_game():
-    dash_generator()
-    hangman_img.config(image = img1)
-    guess_label.config(text = "_________")
-    game_set.config(text = "")
     A = random.randint(1, 58110)
     global Chosen_word
     Chosen_word = wordbank[A]
@@ -100,6 +96,16 @@ def start_game():
     winword = ""
     global game
     game = 0
+    global dashlist
+    dashlist = []
+    global generated_dashes
+    for i in range(len(Chosen_word)):
+        dashlist.append("_ ")
+    generated_dashes = ("").join(dashlist)
+    hangman_img.config(image = img1)
+    guess_label.config(text = "_________")
+    game_set.config(text = "")
+    word_label.config(text = generated_dashes)
     incorrect_guesses.config(text=("incorrect guesses: " + str(wrong)))
 
 
