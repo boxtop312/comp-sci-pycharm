@@ -89,6 +89,7 @@ def start_game():
     A = random.randint(1, 58110)
     global Chosen_word
     Chosen_word = wordbank[A]
+    global usedlist
     usedlist = []
     global wrong
     wrong = 0
