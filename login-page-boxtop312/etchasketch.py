@@ -33,6 +33,9 @@ def colorchanger(color1):
     color = color1
 
 
+def clearscreen():
+    pass
+
 
 # CONTROLLER #
 up_down = Scale(window, from_ = 0, to = 600,font = ("Lobster 1.4",10), orient = VERTICAL, variable = newY)
@@ -61,6 +64,15 @@ yellowbutt.place(x = 275,y = 720,width = 75,height = 20)
 
 greenbutt = Button(window, fg = "black", bg = "green", font = ("Lobster 1.4",15),text = "Green", command = colorchanger("Green"))
 greenbutt.place(x = 350,y = 720,width = 75,height = 20)
+
+bluebutt = Button(window,fg = "black", bg = "blue", font = ("Lobster 1.4",15),text = "Blue", command = colorchanger("Blue"))
+bluebutt.place(x = 200,y = 740,width = 75,height = 20)
+
+purplebutt = Button(window,fg = "Black", bg = "purple", font = ("Lobster 1.4",15), text = "Purple", command = colorchanger("Purple"))
+purplebutt.place(x = 350,y = 740,width = 75,height = 20)
+
+clearbutt = Button(window,fg = "black", font = ("Lobster 1.4",15),text = "Clear", command = clearscreen())
+clearbutt.place(x = 275,y = 740,width = 75,height =20)
 
 # VIEW #
 display = Canvas(window, bg = "Teal")
