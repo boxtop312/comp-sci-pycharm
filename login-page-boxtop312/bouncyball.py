@@ -15,6 +15,12 @@ def random_color():
 	print(color)
 	return color
 
+class Ball:
+	# CONSTRUCTOR - responsable for making an object when it is called upon, it assings values to the attributes
+	def __init__(self):
+		# ATRRIBUTES - Variables that describe the state of the object being made
+		self.radius = 10
+
 
 
 
