@@ -55,7 +55,7 @@ def sentance_checker(event):
     win_checker()
     if wrong == 6:
         hangman_img.config(image = img7)
-        game_set.config(text = ("You failed hangman the word was " + Chosen_word))
+        game_set.config(text = ("you failed hangamen\nthe word was " + Chosen_word))
     elif game == 0:
         if guess not in usedlist:
             usedlist.append(str(guess))
