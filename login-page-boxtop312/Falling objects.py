@@ -2,8 +2,8 @@ from tkinter import *
 import random, math
 
 root = Tk()
-root.title("Bouncing Balls")
-root.geometry("400x400")
+root.title("Falling Objects")
+root.geometry("500x700")
 
 
 #### DATA ####
@@ -22,14 +22,13 @@ class Ball:
         # ATTRIBUTES - variables that describe the state of the object being constructed
         self.radius = 10
         self.color = random_color()
-        self.x = random.randint(10, 390)
-        self.y = random.randint(10, 390)
+        self.x = random.randint(10, 490)
+        self.y = random.randint(10, 690)
         self.speed = 10
         self.direction = random.randint(0, 7)
         self.deltaX = self.speed * math.cos(self.direction)
         self.deltaY = self.speed * math.sin(self.direction)
-        self.b = display.create_oval(self.x - self.radius, self.y - self.radius, self.x + self.radius,
-                                     self.y + self.radius, fill=self.color)
+        self.b = display.create_oval(self.x - self.radius, self.y - self.radius, self.x + self.radius,self.y + self.radius, fill=self.color)
 
     def move(self, balls):
         left, top, right, bottom = self.coords()
@@ -38,7 +37,7 @@ class Ball:
             self.deltaX = self.deltaX * -1
             display.move(self.b, self.deltaX + self.radius * 2, self.deltaY)
         # Right
-        if right > 400:
+        if right > 500:
             self.deltaX = self.deltaX * -1
             display.move(self.b, self.deltaX - self.radius * 2, self.deltaY)
         # Top
@@ -46,7 +45,7 @@ class Ball:
             self.deltaY = self.deltaY * -1
             display.move(self.b, self.deltaX, self.deltaY + self.radius * 2)
         # Bottom
-        if bottom > 400:
+        if bottom > 700:
             self.deltaY = self.deltaY * -1
             display.move(self.b, self.deltaX, self.deltaY - self.radius * 2)
         for b in balls:
@@ -79,9 +78,28 @@ class Ball:
             self.deltaY = self.deltaY * -1
             display.move(self.b, self.deltaX, self.deltaY - self.radius * 2)
 
-    def coords(
-            self):  # returns the coordinates for the top left corner of the object and the coordinates for the bottom right corner
+    def coords(self):  # returns the coordinates for the top left corner of the object and the coordinates for the bottom right corner
         return display.coords(self.b)
+
+
+class Box:
+    def __init__(self):
+        self.xlen = random.randint(1,10)
+        self.ylen = random.randint(1,10)
+        self.color = random_color()
+        self.x = random.randint(10,490)
+        self.y = random.randint(10,100)
+        self.bo = display.create_rectangle(self.x - (self.xlen/2),self.y - (self.ylen/2),self.x + (self.xlen/2),self.y + (self.ylen/2),fill = self.color)
+
+    def fall(self):
+        display.move(self.bo,0,random.randint(1,5))
+        self.x = random.randint(10, 490)
+        self.y = random.randint(10, 100)
+        if self.y >= 700:
+            display.coords(self.x - (self.xlen/2),self.y - (self.ylen/2),self.x + (self.xlen/2),self.y + (self.ylen/2))
+
+    def coords(self):  # returns the coordinates for the top left corner of the object and the coordinates for the bottom right corner
+        return display.coords(self.bo)
 
 
 #### CONTROLLERS ####
@@ -89,16 +107,18 @@ class Ball:
 
 #### VIEW ####
 display = Canvas(root, bg=random_color())
-display.place(x=0, y=0, width=400, height=400)
+display.place(x=0, y=0, width=500, height=700)
 
 ##### CODE FOR THE GAME ######
-first = Ball()
+first = Box()
 
 balls = []
+boxes = []
 for n in range(15):
+    boxes.append(Box())
     balls.append(Ball())
 
-while True:
-    first.move(balls)
-    for ball in balls:
-        ball.move(balls)
+# while True:
+#     first.fall()
+#     for box in boxes:
+#        box.fall()
