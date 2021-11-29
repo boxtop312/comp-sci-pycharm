@@ -123,19 +123,19 @@ class Ball:
 		left, top, right, bottom = self.coords()
 		# Left Side of display
 		if left < 0 :
-			self.deltaX = self.deltaX *-1
+			self.deltaX = self.deltaX *-0.5
 			display.move(self.b, self.deltaX + self.radius*2, self.deltaY)
 		# Right
 		if right > 400 :
-			self.deltaX = self.deltaX *-1
+			self.deltaX = self.deltaX *-0.5
 			display.move(self.b, self.deltaX - self.radius*2, self.deltaY)
 		# Top
 		if top < 0 :
-			self.deltaY = self.deltaY *-1
+			self.deltaY = self.deltaY *-0.5
 			display.move(self.b, self.deltaX, self.deltaY+ self.radius*2)
 		# Bottom
 		if bottom > 400 :
-			self.deltaY = self.deltaY *-1
+			self.deltaY = self.deltaY *-0.5
 			display.move(self.b, self.deltaX, self.deltaY - self.radius*2)
 		for b in balls:
 			self.collision(b)
@@ -148,22 +148,22 @@ class Ball:
 		oLeft, oTop, oRight, oBottom = object.coords()
 		# Left - when ball hits the left side of the object
 		if bLeft < oRight and bRight > oRight and bTop < oBottom and bBottom > oTop:
-			self.deltaX = self.deltaX *-1
+			self.deltaX = self.deltaX *-0.5
 			display.move(self.b, self.deltaX + self.radius*2, self.deltaY)
 
 		# Right - when ball hits the right side of the object
 		if bRight > oLeft and bLeft < oLeft and bTop < oBottom and bBottom > oTop:
-			self.deltaX = self.deltaX *-1
+			self.deltaX = self.deltaX *-0.5
 			display.move(self.b, self.deltaX - self.radius*2, self.deltaY)
 
 		# Top - when ball hits the top of the object
 		if bBottom > oTop and bTop < oTop and bLeft < oRight and bRight > oLeft:
-			self.deltaY = self.deltaY *-1
+			self.deltaY = self.deltaY *-0.5
 			display.move(self.b, self.deltaX, self.deltaY+ self.radius*2)
 
 		# Bottom - when ball hits the bottom of the object
 		if bTop < oBottom and bBottom > oBottom and bRight > oLeft and bLeft < oRight:
-			self.deltaY = self.deltaY *-1
+			self.deltaY = self.deltaY *-0.5
 			display.move(self.b, self.deltaX, self.deltaY - self.radius*2)
 
 
