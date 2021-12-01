@@ -7,6 +7,8 @@ root.geometry("500x700")
 
 
 #### DATA ####
+# img = img.open()
+
 def random_color():
     hex = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
     color = "#"
@@ -118,7 +120,7 @@ for n in range(15):
     boxes.append(Box())
     balls.append(Ball())
 
-# while True:
-#     first.fall()
-#     for box in boxes:
-#        box.fall()
+while True:
+    first.fall()
+    for box in boxes:
+       box.fall()
