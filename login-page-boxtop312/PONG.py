@@ -11,7 +11,7 @@ start = Frame(root, bg="Black")
 start.place(x=0, y=0, width=400, height=500)
 
 
-def start_game(event):
+def start_game():
     game.tkraise()
 
 
@@ -96,12 +96,17 @@ class Ball:
 startbutt = Button(start, text="Press to start", bg="black", fg="white", command=start_game, font=("Lobster 1.4", 10))
 startbutt.place(x=150, y=450)
 # VIEW #
-display = Canvas(root, bg="Black")
+Logo = Label(start,font = ("Lobster 1.4",50),bg = "black", fg ="White",text = "Not 'pong'")
+Logo.place(x = 60,y = 200)
+ballsizelabel = Label(start,font = ("Lobster 1.4",15),bg = "black",fg = "white",text = "Ball Size:")
+ballsizelabel.place(x = 10,y = 10)
+display = Canvas(game, bg="teal")
 display.place(x=0, y=0, width=400, height=400)
-
-root.mainloop()
 
 first = Ball()
 balls = []
 while True:
     first.move(balls)
+
+root.mainloop()
+
