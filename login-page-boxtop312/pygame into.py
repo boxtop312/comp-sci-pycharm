@@ -47,8 +47,43 @@ class Player(pygame.sprite.Sprite):
         elif self.rect.bottom >= SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
 
-# class OtherThing(pygame.sprite):
-#     pass
+
+class OtherThing(pygame.sprite.Sprite):
+    def __init__(self,shape):
+        super(OtherThing, self).__init__()
+        self.surf = pygame.Surface((64, 64))
+        self.surf.fill((255, 255, 255, 0))
+        self.surf.set_colorkey("white")
+        self.surf.blit(shape, (0, 0))
+        self.rect = self.surf.get_rect()
+
+    def update(self):
+        x = random.randint(-1,1)
+        y = random.randint(-1,1)
+        self.rect.move_ip(x, y)
+
+        if self.rect.left < 0:
+            self.rect.left = 0
+        elif self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+        if self.rect.top <= 0:
+            self.rect.top = 0
+        elif self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT
+
+    def timer(self, triangle, square, pentagon, hexagon, heptagon, first):
+        if time.time() == (first + 1):
+            self.surf.blit(square, (0, 0))
+        elif time.time() == (first + 2):
+            self.surf.blit(pentagon, (0, 0))
+        elif time.time() == (first + 3):
+            self.surf.blit(hexagon, (0, 0))
+        elif time.time() == (first + 4):
+            self.surf.blit(heptagon,(0, 0))
+        elif time.time() == (first + 5):
+            self.surf.blit(triangle,(0, 0))
+            first = time.time()
+        screen.blit(prize.surf, prize.rect)
 
 
 # Initialize pygame
@@ -74,10 +109,24 @@ ball = pygame.image.load("player.png")
 player = Player(ball)
 
 triangle = pygame.image.load("caution.png")
+prize = OtherThing(triangle)
 square = pygame.image.load("stop.png")
 pentagon = pygame.image.load("pentagon.png")
 hexagon = pygame.image.load("hexagon.png")
 heptagon = pygame.image.load("heptagon.png")
+
+# create a group to hold prizes objects and all objects
+# prizes = pygame.sprinte.Group()
+# for p in range(5):
+#     x = random.randint(0,550)
+#     y = random.randint(0,100)
+#     prizes.add(OtherThing(x, y))
+
+# create a group to hold all spites
+# all_sprites = pygame.sprites.Group()
+# all_sprites.add(Player(ball))
+# all_sprites.add(prizes)
+
 # Variable to keep our main loop running
 running = True
 
@@ -100,15 +149,20 @@ while running:
     # Background Image
     screen.blit(background, (0, 0))
 
+    # for entity in all_sprites:
+    #     screen.blit(entity.surf,entity.rect)
+
     # Create a Surface object
 
     screen.blit(player.surf, player.rect)
+    screen.blit(prize.surf, prize.rect)
 
     # Get the set of keys pressed and check for user input
     pressed_keys = pygame.key.get_pressed()
 
     # Update the player sprite based on user key presses
     player.update(pressed_keys)
+    prize.update()
 
     # Updates the screen
     pygame.display.update()
