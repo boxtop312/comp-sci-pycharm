@@ -1,4 +1,7 @@
-import pygame, random, time, math
+import pygame
+import random
+import time
+import math
 
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
@@ -14,8 +17,9 @@ from pygame.locals import (
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, ball):
+    def __init__(self):
         super(Player, self).__init__()
+        ball = pygame.image.load("player.png")
         self.surf = pygame.Surface((64, 64))
         self.surf.fill((255, 255, 255, 0))
         self.surf.set_colorkey("white")
@@ -62,6 +66,8 @@ class OtherThing(pygame.sprite.Sprite):
             x1 = player.rect.right - self.rect.right
             y1 = player.rect.top - self.rect.top
             hyp = math.sqrt((x1 ** 2) + (y1 ** 2))
+            if hyp == 0:
+                hyp = 0.000001
             self.deltaX = ((0.34 * x1) / hyp)
             self.deltaY = ((0.34 * y1) / hyp)
 
@@ -157,14 +163,14 @@ pygame.display.set_icon(icon)
 # Load Screen background
 background = pygame.image.load('background.jpg')
 
-ball = pygame.image.load("player.png")
+
 triangle = pygame.image.load("caution.png")
 square = pygame.image.load("stop.png")
 pentagon = pygame.image.load("pentagon.png")
 hexagon = pygame.image.load("hexagon.png")
 heptagon = pygame.image.load("heptagon.png")
 blank = pygame.image.load("blank.png")
-player = Player(ball)
+player = Player()
 prize = OtherThing(blank)
 
 # create a group to hold prizes objects and all objects
@@ -182,11 +188,7 @@ running = True
 monster = False
 start = time.time()
 score = 0
-# creates things for displaying text
-font = pygame.font.Font("arial.ttf", 32)
-text = font.render(("game over/n", "your score is: ", str(score), True, (0, 0, 0), (255, 255, 255)))
-textRect = text.get_rect()
-textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
 # Our main loop
 while running:
 
@@ -234,8 +236,6 @@ while running:
         for p in prize_list:
             if monster:
                 player.kill()
-                screen.blit(text, textRect)
-                time.sleep(10)
                 running = False
             else:
                 p.killed()
@@ -244,3 +244,11 @@ while running:
         screen.blit(entity.surf, entity.rect)
     # Updates the screen
     pygame.display.update()
+# creates things for displaying text
+font = pygame.font.Font("arial.ttf", 32)
+text = font.render(("Game Over Your Score is: " + str(score)), True, (0, 0, 0))
+textRect = text.get_rect()
+textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+screen.blit(text, textRect)
+pygame.display.update()
+time.sleep(2)
