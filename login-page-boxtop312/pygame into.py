@@ -1,4 +1,4 @@
-import pygame, random, time
+import pygame, random, time, math
 
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
@@ -25,16 +25,12 @@ class Player(pygame.sprite.Sprite):
     # Move the sprite based on key presses
     def update(self, pressed_keys):
         if pressed_keys[K_UP]:
-            print("UP")
             self.rect.move_ip(0, -1)
         if pressed_keys[K_DOWN]:
-            print("DOWN")
             self.rect.move_ip(0, 1)
         if pressed_keys[K_LEFT]:
-            print("LEFT")
             self.rect.move_ip(-1, 0)
         if pressed_keys[K_RIGHT]:
-            print("RIGHT")
             self.rect.move_ip(1, 0)
 
         # Keep player on the screen
@@ -49,41 +45,79 @@ class Player(pygame.sprite.Sprite):
 
 
 class OtherThing(pygame.sprite.Sprite):
-    def __init__(self,shape):
+    def __init__(self, shape):
         super(OtherThing, self).__init__()
         self.surf = pygame.Surface((64, 64))
         self.surf.fill((255, 255, 255, 0))
         self.surf.set_colorkey("white")
         self.surf.blit(shape, (0, 0))
         self.rect = self.surf.get_rect()
+        self.x = random.randint(0, SCREEN_WIDTH)
+        self.y = random.randint(0, SCREEN_HEIGHT)
+        self.deltaX = random.choice([-.1, .1])
+        self.deltaY = .1
 
     def update(self):
-        x = random.randint(-1,1)
-        y = random.randint(-1,1)
-        self.rect.move_ip(x, y)
+        if monster:
+            # player_coords = player.rect
+            # monster_coords = self.rect
+            # print(player_coords,"/n",monster_coords)
+            # x1 = player.rect.right-self.rect.right
+            # y1 = player.rect.top-self.rect.top
+            # hyp = math.sqrt((x1**2)+(y1**2))
+            # self.deltaX = ((0.3*x1)/hyp)
+            # self.deltaY = ((0.3*y1)/hyp)
 
-        if self.rect.left < 0:
-            self.rect.left = 0
-        elif self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-        if self.rect.top <= 0:
-            self.rect.top = 0
-        elif self.rect.bottom >= SCREEN_HEIGHT:
-            self.rect.bottom = SCREEN_HEIGHT
+            self.x += self.deltaX
+            self.y += self.deltaY
+            self.rect.right = self.x
+            self.rect.top = self.y
 
-    def timer(self, triangle, square, pentagon, hexagon, heptagon, first):
-        if time.time() == (first + 1):
-            self.surf.blit(square, (0, 0))
-        elif time.time() == (first + 2):
-            self.surf.blit(pentagon, (0, 0))
-        elif time.time() == (first + 3):
-            self.surf.blit(hexagon, (0, 0))
-        elif time.time() == (first + 4):
-            self.surf.blit(heptagon,(0, 0))
-        elif time.time() == (first + 5):
-            self.surf.blit(triangle,(0, 0))
-            first = time.time()
-        screen.blit(prize.surf, prize.rect)
+            if self.rect.left < 0:
+                self.deltaX = .1
+            if self.rect.right > 800:
+                self.deltaX = -.1
+            if self.rect.top < 0:
+                self.deltaY = .1
+            if self.rect.bottom > 600:
+                self.deltaY = -.1
+        else:
+            self.x += self.deltaX
+            self.y += self.deltaY
+            self.rect.right = self.x
+            self.rect.top = self.y
+
+            if self.rect.left < 0:
+                self.deltaX = .1
+            if self.rect.right > 800:
+                self.deltaX = -.1
+            if self.rect.top < 0:
+                self.deltaY = .1
+            if self.rect.bottom > 600:
+                self.deltaY = -.1
+
+
+
+    def changer(self, triangle, square, pentagon, hexagon, heptagon, start):
+        if monster:
+            self.surf.fill((255, 255, 255, 0))
+            self.surf.blit(heptagon, (0, 0))
+        else:
+            if (time.time() - start) > 5:
+                self.surf.fill((255, 255, 255, 0))
+                self.surf.blit(heptagon, (0, 0))
+            elif (time.time() - start) > 4:
+                self.surf.fill((255, 255, 255, 0))
+                self.surf.blit(hexagon, (0, 0))
+            elif (time.time() - start) > 3:
+                self.surf.fill((255, 255, 255, 0))
+                self.surf.blit(pentagon, (0, 0))
+            elif (time.time() - start) > 2:
+                self.surf.fill((255, 255, 255, 0))
+                self.surf.blit(square, (0, 0))
+            elif (time.time() - start) > 1 or 0:
+                self.surf.fill((255, 255, 255, 0))
+                self.surf.blit(triangle, (0, 0))
 
 
 # Initialize pygame
@@ -106,32 +140,32 @@ pygame.display.set_icon(icon)
 background = pygame.image.load('background.jpg')
 
 ball = pygame.image.load("player.png")
-player = Player(ball)
-
 triangle = pygame.image.load("caution.png")
-prize = OtherThing(triangle)
 square = pygame.image.load("stop.png")
 pentagon = pygame.image.load("pentagon.png")
 hexagon = pygame.image.load("hexagon.png")
 heptagon = pygame.image.load("heptagon.png")
+player = Player(ball)
+prize = OtherThing()
 
 # create a group to hold prizes objects and all objects
-# prizes = pygame.sprinte.Group()
-# for p in range(5):
-#     x = random.randint(0,550)
-#     y = random.randint(0,100)
-#     prizes.add(OtherThing(x, y))
+prizes = pygame.sprite.Group()
+for p in range(10):
+    prizes.add(OtherThing(triangle))
 
 # create a group to hold all spites
-# all_sprites = pygame.sprites.Group()
-# all_sprites.add(Player(ball))
-# all_sprites.add(prizes)
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player)
+all_sprites.add(prizes)
 
 # Variable to keep our main loop running
 running = True
-
+monster = False
+start = time.time()
+killed = 0
 # Our main loop
 while running:
+
     # Look at every event in the queue
     for event in pygame.event.get():
         # Did the user hit a key?
@@ -144,13 +178,8 @@ while running:
         elif event.type == QUIT:
             running = False
 
-    # # Fill the screen with black
-    # screen.fill((102, 43, 104))
     # Background Image
     screen.blit(background, (0, 0))
-
-    # for entity in all_sprites:
-    #     screen.blit(entity.surf,entity.rect)
 
     # Create a Surface object
 
@@ -163,6 +192,31 @@ while running:
     # Update the player sprite based on user key presses
     player.update(pressed_keys)
     prize.update()
+    prize.changer(triangle, square, pentagon, hexagon, heptagon, start)
 
+    for p in prizes:
+        p.update()
+        p.changer(triangle, square, pentagon, hexagon, heptagon, start)
+
+    if (time.time() - start) > 5:
+        print("5 seconds has elapsed")
+        if monster:
+            monster = False
+        else:
+            monster = True
+        start = time.time()
+
+    # Colision
+    if pygame.sprite.spritecollide(player, prizes, False):
+        prize_list = pygame.sprite.spritecollide(player, prizes, False)
+        for p in prize_list:
+            if monster:
+                player.kill()
+                running = False
+            else:
+                p.kill()
+                print(len(prizes))
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
     # Updates the screen
     pygame.display.update()
