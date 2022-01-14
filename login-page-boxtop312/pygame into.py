@@ -59,14 +59,11 @@ class OtherThing(pygame.sprite.Sprite):
 
     def update(self):
         if monster:
-            # player_coords = player.rect
-            # monster_coords = self.rect
-            # print(player_coords,"/n",monster_coords)
-            # x1 = player.rect.right-self.rect.right
-            # y1 = player.rect.top-self.rect.top
-            # hyp = math.sqrt((x1**2)+(y1**2))
-            # self.deltaX = ((0.3*x1)/hyp)
-            # self.deltaY = ((0.3*y1)/hyp)
+            x1 = player.rect.right - self.rect.right
+            y1 = player.rect.top - self.rect.top
+            hyp = math.sqrt((x1 ** 2) + (y1 ** 2))
+            self.deltaX = ((0.34 * x1) / hyp)
+            self.deltaY = ((0.34 * y1) / hyp)
 
             self.x += self.deltaX
             self.y += self.deltaY
@@ -95,8 +92,6 @@ class OtherThing(pygame.sprite.Sprite):
                 self.deltaY = .1
             if self.rect.bottom > 600:
                 self.deltaY = -.1
-
-
 
     def changer(self, triangle, square, pentagon, hexagon, heptagon, start):
         if monster:
@@ -118,6 +113,29 @@ class OtherThing(pygame.sprite.Sprite):
             elif (time.time() - start) > 1 or 0:
                 self.surf.fill((255, 255, 255, 0))
                 self.surf.blit(triangle, (0, 0))
+
+    def killed(self):
+        if monster:
+            pass
+        else:
+            self.x = random.randint(0, SCREEN_WIDTH)
+            self.y = random.randint(0, SCREEN_HEIGHT)
+            self.deltaX = random.choice([-.1, .1])
+            self.deltaY = .1
+
+            self.x += self.deltaX
+            self.y += self.deltaY
+            self.rect.right = self.x
+            self.rect.top = self.y
+
+            if self.rect.left < 0:
+                self.deltaX = .1
+            if self.rect.right > 800:
+                self.deltaX = -.1
+            if self.rect.top < 0:
+                self.deltaY = .1
+            if self.rect.bottom > 600:
+                self.deltaY = -.1
 
 
 # Initialize pygame
@@ -145,8 +163,9 @@ square = pygame.image.load("stop.png")
 pentagon = pygame.image.load("pentagon.png")
 hexagon = pygame.image.load("hexagon.png")
 heptagon = pygame.image.load("heptagon.png")
+blank = pygame.image.load("blank.png")
 player = Player(ball)
-prize = OtherThing()
+prize = OtherThing(blank)
 
 # create a group to hold prizes objects and all objects
 prizes = pygame.sprite.Group()
@@ -162,7 +181,12 @@ all_sprites.add(prizes)
 running = True
 monster = False
 start = time.time()
-killed = 0
+score = 0
+# creates things for displaying text
+font = pygame.font.Font("arial.ttf", 32)
+text = font.render(("game over/n", "your score is: ", str(score), True, (0, 0, 0), (255, 255, 255)))
+textRect = text.get_rect()
+textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 # Our main loop
 while running:
 
@@ -192,14 +216,12 @@ while running:
     # Update the player sprite based on user key presses
     player.update(pressed_keys)
     prize.update()
-    prize.changer(triangle, square, pentagon, hexagon, heptagon, start)
 
     for p in prizes:
         p.update()
         p.changer(triangle, square, pentagon, hexagon, heptagon, start)
 
     if (time.time() - start) > 5:
-        print("5 seconds has elapsed")
         if monster:
             monster = False
         else:
@@ -212,10 +234,12 @@ while running:
         for p in prize_list:
             if monster:
                 player.kill()
+                screen.blit(text, textRect)
+                time.sleep(10)
                 running = False
             else:
-                p.kill()
-                print(len(prizes))
+                p.killed()
+                score += 100
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
     # Updates the screen
