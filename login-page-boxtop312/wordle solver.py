@@ -1,17 +1,6 @@
 from heapq import merge
-# wordbank = open("words.txt", "r")
-# wordbank = wordbank.read()
-# wordbank = wordbank.split()  # now word bank is a list
-#
-# fiveletterwords = open("5leterwords.txt", "r")
-# fivewordbank = fiveletterwords.read()
-# fivewordbank = fivewordbank.split()  # now five word bank is also a list
-#
-# wordbank = list(merge(wordbank, fivewordbank))  # now word bank is a combination of word bank and five word bank as one
-#
-# oldwords = []
-# for i in wordbank:
-#     oldwords.append(i)
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n|    wellcome to the word guesser   |\n|   only words for words that "
+      "are   |\n|        not names or phrases       |\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 
 def wordlesolver():
@@ -31,12 +20,12 @@ def wordlesolver():
         oldwords.append(i)
     removedwords = []
     wordlen = 5
-    notletters = (input("input the letters that are not in the word:"))
+    notletters = (input("input the letters that are not in the word: "))
     fixedletters = str(input("input the letters that are green, use underscores for the blank spaces and dont put in "
-                             "yellow letters.\n for example o_u_t:"))
+                             "yellow letters.\n for example o_u_t: "))
     unfixedletters = str(
         input("input the yellow letters where they are yellow, use underscores for blank spaces.\n for "
-              "example t_y_e:"))
+              "example t_y_e: "))
 
     for i in oldwords:
         if len(i) != wordlen and i not in removedwords:
@@ -92,11 +81,39 @@ def wordlesolver():
 
 def generalpurpose():
     removedwords = []
-    wordlen = int(input("input the number of letters in the word"))
-    notletters = (input("input the letters that are not in the word:"))
+    wordlen = int(input("input the number of letters in the word: "))
+    notletters = (input("input the letters that are not in the word: "))
     fixedletters = str(input("input the letters that are correct, use underscores for the blank spaces \n for example "
-                             "o_u_t:"))
-    if wordlen == 5:
+                             "o_u_t: "))
+    if wordlen == 2:
+        wordbank = open("words.txt", "r")
+        wordbank = wordbank.read()
+        wordbank = wordbank.split()  # now word bank is a list
+
+        twoletterwords = open("2leterwords.txt", "r")
+        twowordbank = twoletterwords.read()
+        twowordbank = twowordbank.split()
+
+        wordbank = list(merge(wordbank, twowordbank))
+
+        oldwords = []
+        for i in wordbank:
+            oldwords.append(i)
+    elif wordlen == 3:
+        wordbank = open("words.txt", "r")
+        wordbank = wordbank.read()
+        wordbank = wordbank.split()  # now word bank is a list
+
+        threeletterwords = open("3leterwords.txt", "r")
+        threewordbank = threeletterwords.read()
+        threewordbank = threewordbank.split()
+
+        wordbank = list(merge(wordbank, threewordbank))
+
+        oldwords = []
+        for i in wordbank:
+            oldwords.append(i)
+    elif wordlen == 5:
         wordbank = open("words.txt", "r")
         wordbank = wordbank.read()
         wordbank = wordbank.split()  # now word bank is a list
@@ -128,6 +145,12 @@ def generalpurpose():
         twowordbank = twowordbank.split()
 
         wordbank = list(merge(wordbank, twowordbank))
+
+        threeletterwords = open("3leterwords.txt", "r")
+        threewordbank = threeletterwords.read()
+        threewordbank = threewordbank.split()
+
+        wordbank = list(merge(wordbank, threewordbank))
 
         oldwords = []
         for i in wordbank:
@@ -170,7 +193,7 @@ def generalpurpose():
     print(wordbank)
 
 
-wordgame = int(input("input what word game you are solving\n 0 for wordle 1 for general purpose: "))
+wordgame = int(input("input what word game you are solving\n0 for wordle 1 for general purpose: "))
 if wordgame == 0:
     wordlesolver()
 elif wordgame == 1:
