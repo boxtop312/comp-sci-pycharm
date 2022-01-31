@@ -85,12 +85,14 @@ def wordlesolver():
             removedwords.append(i)
             wordbank.remove(i)
             # print("removed word too long")
+            print(len(wordbank))
         else:
             for ii in i:
                 if ii.lower() in notletters and i not in removedwords:
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word with letters in not letters")
+                    print(len(wordbank))
                     break
             for q in unfixedletters:
                 if q != "_":
@@ -98,17 +100,20 @@ def wordlesolver():
                         removedwords.append(i)
                         wordbank.remove(i)
                         # print("removed word with letters not in yellow letters")
+                        print(len(wordbank))
                         break
             for ii in range(0, len(i)):
                 if i not in removedwords and fixedletters[ii] != "_" and fixedletters[ii] != i[ii].lower():
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word because of green letters")
+                    print(len(wordbank))
                     break
                 elif i not in removedwords and unfixedletters[ii] != "_" and unfixedletters[ii] == i[ii].lower():
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word because of yellow letters")
+                    print(len(wordbank))
                     break
 
     print("length of word bank: " + str(len(wordbank)) + "\n")

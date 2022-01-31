@@ -25,9 +25,9 @@ def distance(obj1, obj2):
     y1 = obj1.rect.top + obj1.radius
     x2 = obj2.rect.left + obj2.radius
     y2 = obj2.rect.top + obj2.radius
-    x = x1-x2
-    y = y1-y2
-    return math.sqrt((x**2)+(y**2))
+    x = x1 - x2
+    y = y1 - y2
+    return math.sqrt((x ** 2) + (y ** 2))
 
 
 class Food(pygame.sprite.Sprite):
@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
         self.y = 250
 
     def collide(self, obj):
-        return distance(self, obj) <= self.radius/1.25 + obj.radius
+        return distance(self, obj) <= self.radius / 1.25 + obj.radius
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -74,15 +74,33 @@ class Enemy(pygame.sprite.Sprite):
         self.surf.set_colorkey((0, 0, 0))
         pygame.draw.circle(self.surf, self.color, (self.radius, self.radius), self.radius, 0)
         self.rect = self.surf.get_rect()
-        self.rect.left = random.randint(int(25/2), int(500-(25/2)))
+        self.rect.left = random.randint(int(25 / 2), int(500 - (25 / 2)))
         self.rect.top = self.rect.left + 30
-        self.x = random.randint(int(25/2), int(500-(25/2)))
-        self.y = random.randint(int(25/2), int(500-(25/2)))
+        self.x = random.randint(int(25 / 2), int(500 - (25 / 2)))
+        self.y = random.randint(int(25 / 2), int(500 - (25 / 2)))
         self.deltaX = random.choice([-.1, .1])
         self.deltaY = .1
 
     def collide(self, obj):
-        return distance(self, obj) <= self.radius/1.25 + obj.radius
+        return distance(self, obj) <= self.radius / 1.25 + obj.radius
+
+    def move(self):
+        self.x += self.deltaX
+        self.y += self.deltaY
+        print(self.rect.right)
+        self.rect.right = self.x
+        self.rect.top = self.y
+        print(self.rect.right)
+        if self.rect.left < 0:
+            self.deltaX = .1
+        if self.rect.right > 500:
+            self.deltaX = -.1
+
+        if self.rect.top < 0:
+            self.deltaY = .1
+        if self.rect.bottom > 500:
+            self.deltaY = -.1
+
 
 # Initialize pygame
 pygame.init()
@@ -95,7 +113,6 @@ SCREEN_HEIGHT = 500
 # The size is determined by the constant SCREEN_WIDTH and SCREEN_HEIGHT
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 player = Player()
-enemy = Enemy()
 # Group contains all of the food objects
 comida = pygame.sprite.Group()
 for f in range(25):
@@ -107,11 +124,13 @@ enemys = pygame.sprite.Group()
 for x in range(5):
     enemys.add(Enemy())
 
+competetors = pygame.sprite.Group()
+competetors.add(enemys)
+competetors.add(player)
+
 all_sprites = pygame.sprite.Group()
 all_sprites.add(comida)
-all_sprites.add(player)
-all_sprites.add(enemys)
-
+all_sprites.add(competetors)
 
 # Variable to keep our main loop running
 running = True
@@ -151,19 +170,8 @@ while running:
     player.rect.left = player.x
     player.rect.top = player.y
 
-    # enemy.x += enemy.deltaX
-    # enemy.y += enemy.deltaY
-    # enemy.rect.right = enemy.x
-    # enemy.rect.top = enemy.y
-    #
-    # if enemy.rect.left < 0:
-    #     enemy.deltaX = .1
-    # if enemy.rect.right > 800:
-    #     enemy.deltaX = -.1
-    # if enemy.rect.top < 0:
-    #     enemy.deltaY = .1
-    # if enemy.rect.bottom > 600:
-    #     enemy.deltaY = -.1
+    for enemy in enemys:
+        enemy.move()
 
     for i in all_sprites:
         if player != i and player.collide(i):
@@ -184,15 +192,25 @@ while running:
                     player.surf.set_colorkey((0, 0, 0))
                     pygame.draw.circle(player.surf, player.color, (player.radius, player.radius), player.radius, 0)
                     player.rect = player.surf.get_rect()
-        if i not in enemys and Enemy().collide(i):
-            if i in comida:
-                i.kill()
-                Enemy().radius += i.radius
-                Enemy().surf = pygame.Surface((Enemy().radius * 2, Enemy().radius * 2))
-                Enemy().surf.fill((0, 0, 0))
-                Enemy().surf.set_colorkey((0, 0, 0))
-                pygame.draw.circle(Enemy().surf, Enemy().color, (Enemy().radius, Enemy().radius), Enemy().radius, 0)
-                Enemy().rect = Enemy().surf.get_rect()
+        for e in enemys:
+            if i not in enemys and e.collide(i):
+                if i in comida:
+                    i.kill()
+                    e.radius += i.radius
+                    e.surf = pygame.Surface((e.radius * 2, e.radius * 2))
+                    e.surf.fill((0, 0, 0))
+                    e.surf.set_colorkey((0, 0, 0))
+                    pygame.draw.circle(e.surf, e.color, (e.radius, e.radius), e.radius, 0)
+                    e.rect = e.surf.get_rect()
+                elif i == player:
+                    if i.radius < e.radius:
+                        i.kill()
+                        e.radius += i.radius
+                        e.surf = pygame.Surface((e.radius * 2, e.radius * 2))
+                        e.surf.fill((0, 0, 0))
+                        e.surf.set_colorkey((0, 0, 0))
+                        pygame.draw.circle(e.surf, e.color, (e.radius, e.radius), e.radius, 0)
+                        e.rect = e.surf.get_rect()
     for a in all_sprites:
         screen.blit(a.surf, a.rect)
 
