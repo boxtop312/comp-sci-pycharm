@@ -329,7 +329,7 @@ def wordtwister():
                 scrabblewordbank = scrabblewordbank.split()
 
                 wordbank = list(merge(wordbank, threewordbank, fourwordbank, fivewordbank, scrabblewordbank))  # now
-                # word bank is a combination of word bank and five word bank as one
+                # word bank is a combination of word bank and five word bank and the three and four wordbanks and the scrabble word bank
 
             else:
                 wordbank = open("words.txt", "r")
@@ -360,20 +360,20 @@ def wordtwister():
         oldwords.append(i)
 
     for i in oldwords:
-        if len(letters) < len(i) or len(i) <= 2 and i not in removedwords:
+        if i not in removedwords or len(letters) < len(i) <= 2:
             removedwords.append(i)
             wordbank.remove(i)
             # print("removed word too long or too short")
             print(len(wordbank))
         else:
             for ii in i:
-                if ii.lower() not in letters and i not in removedwords:
+                if i not in removedwords or ii.lower() not in letters:
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word with letters in not letters")
                     print(len(wordbank))
                     break
-            if i.lower() in usedwords:
+            if i not in removedwords or i.lower() in usedwords:
                 removedwords.append(i)
                 wordbank.remove(i)
                 # print("removed word that was allready used")
