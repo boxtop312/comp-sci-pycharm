@@ -20,6 +20,7 @@ def wordlesolver(notletters, fixedletters, unfixedletters):
 
     wordbank = list(
         merge(wordbank, fivewordbank))  # now word bank is a combination of word bank and five word bank as one
+    # wordbank = fivewordbank
 
     oldwords = []
     for i in wordbank:
@@ -122,11 +123,63 @@ def wordlesolver(notletters, fixedletters, unfixedletters):
                     print(len(wordbank))
                     break
 
-    print("length of word bank: " + str(len(wordbank)) + "\n")
-    for i in range(int(len(wordbank)/9)):
-        for ii in range(0,8):
-            print(wordbank[ii+i], " ", end="")
-        print("")
+    print("length of word bank: " + str(len(wordbank)))
+    if len(wordbank) % 10 == 0:
+        for i in range(int(len(wordbank)/10)):
+            for ii in range(0, 10):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 9 == 0:
+        for i in range(int(len(wordbank)/9)):
+            for ii in range(0, 9):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 8 == 0:
+        for i in range(int(len(wordbank)/8)):
+            for ii in range(0, 8):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 7 == 0:
+        for i in range(int(len(wordbank)/7)):
+            for ii in range(0, 7):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 6 == 0:
+        for i in range(int(len(wordbank)/6)):
+            for ii in range(0, 6):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 5 == 0:
+        for i in range(int(len(wordbank)/5)):
+            for ii in range(0, 5):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 4 == 0:
+        for i in range(int(len(wordbank)/4)):
+            for ii in range(0, 4):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 3 == 0:
+        for i in range(int(len(wordbank)/3)):
+            for ii in range(0, 3):
+                print(wordbank[ii+i], " ", end="")
+            print("")
+    elif len(wordbank) % 2 == 0:
+        for i in range(int(len(wordbank) / 2)):
+            for ii in range(0, 2):
+                print(wordbank[ii + i], " ", end="")
+            print("")
+    else:
+        if isprime(len(wordbank)):
+            for i in range(len(wordbank)):
+                print(wordbank[i])
+        elif len(wordbank) == 1:
+            print(wordbank[i])
+        else:
+            for i in range(len(wordbank)):
+                for ii in range(0, 10):
+                    print(wordbank[ii + (i * 10)], " ", end="")
+                print("")
 
 
 def generalpurpose():
@@ -395,6 +448,17 @@ def wordtwister():
 
     print("length of word bank: " + str(len(wordbank)) + "\n")
     print(wordbank)
+
+
+def isprime(x):
+    if x > 1:
+        for n in range(2, x):
+            if (x % n) == 0:
+                return False
+        else:
+            return True
+    else:
+        return False
 
 
 wordgame = int(input("input what word game you are solving\n0 for Wordle 1 for Hangman 2 for Word Twister: "))
