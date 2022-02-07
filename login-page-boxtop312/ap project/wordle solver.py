@@ -1,9 +1,10 @@
 from heapq import merge
+
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n|    wellcome to the word guesser   |\n|   only words for words that "
       "are   |\n|        not names or phrases       |\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 
-def wordlesolver():
+def wordlesolver(notletters, fixedletters, unfixedletters):
     wordbank = open("words.txt", "r")
     wordbank = wordbank.read()
     wordbank = wordbank.split()  # now word bank is a list
@@ -17,8 +18,7 @@ def wordlesolver():
     scrabblewordbank = scrabblewordbank.split()
 
     wordbank = list(
-        merge(wordbank, fivewordbank, scrabblewordbank))  # now word bank is a combination of word bank and five word
-    # bank as one
+        merge(wordbank, fivewordbank))  # now word bank is a combination of word bank and five word bank as one
 
     oldwords = []
     for i in wordbank:
@@ -26,24 +26,20 @@ def wordlesolver():
 
     removedwords = []
     wordlen = 5
-    notletters = (input("input the letters that are not in the word: "))
-    fixedletters = str(input("input the letters that are green, use underscores for the blank spaces and dont put in "
-                             "yellow letters.\n for example o_u_t: "))
-    unfixedletters = str(
-        input("input the yellow letters where they are yellow, use underscores for blank spaces.\n for "
-              "example t_y_e: "))
 
     for i in oldwords:
         if len(i) != wordlen and i not in removedwords:
             removedwords.append(i)
             wordbank.remove(i)
             # print("removed word too long")
+            print(len(wordbank))
         else:
             for ii in i:
                 if ii.lower() in notletters and i not in removedwords:
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word with letters in not letters")
+                    print(len(wordbank))
                     break
             for q in unfixedletters:
                 if q != "_":
@@ -51,31 +47,40 @@ def wordlesolver():
                         removedwords.append(i)
                         wordbank.remove(i)
                         # print("removed word with letters not in yellow letters")
+                        print(len(wordbank))
                         break
             for ii in range(0, len(i)):
                 if i not in removedwords and fixedletters[ii] != "_" and fixedletters[ii] != i[ii].lower():
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word because of green letters")
+                    print(len(wordbank))
                     break
                 elif i not in removedwords and unfixedletters[ii] != "_" and unfixedletters[ii] == i[ii].lower():
                     removedwords.append(i)
                     wordbank.remove(i)
                     # print("removed word because of yellow letters")
+                    print(len(wordbank))
                     break
+
     duplicatewords = []
+    print("removing duplicates")
     for i in wordbank:
         if len(i) != wordlen:
             removedwords.append(i)
             wordbank.remove(i)
+            print(len(wordbank))
         for ii in wordbank:
             if ii.lower() == i.lower() and ii != i and i not in duplicatewords:
                 duplicatewords.append(i)
                 wordbank.remove(i)
+                print(len(wordbank))
                 break
     if "chaplain" in wordbank:
         wordbank.remove("chaplain")
+        print(len(wordbank))
 
+    print("double checking")
     oldwords = []
     for i in wordbank:
         oldwords.append(i)
@@ -139,7 +144,7 @@ def generalpurpose():
         scrabblewordbank = scrabblewords.read()
         scrabblewordbank = scrabblewordbank.split()
 
-        wordbank = list(merge(wordbank, twowordbank, scrabblewordbank))
+        wordbank = list(merge(wordbank, twowordbank))
 
         oldwords = []
         for i in wordbank:
@@ -157,7 +162,7 @@ def generalpurpose():
         scrabblewordbank = scrabblewords.read()
         scrabblewordbank = scrabblewordbank.split()
 
-        wordbank = list(merge(wordbank, threewordbank, scrabblewordbank))
+        wordbank = list(merge(wordbank, threewordbank))
 
         oldwords = []
         for i in wordbank:
@@ -175,7 +180,7 @@ def generalpurpose():
         scrabblewordbank = scrabblewords.read()
         scrabblewordbank = scrabblewordbank.split()
 
-        wordbank = list(merge(wordbank, fourwordbank, scrabblewordbank))
+        wordbank = list(merge(wordbank, fourwordbank))
 
         oldwords = []
         for i in wordbank:
@@ -194,7 +199,7 @@ def generalpurpose():
         scrabblewordbank = scrabblewordbank.split()
 
         wordbank = list(
-            merge(wordbank, fivewordbank, scrabblewordbank))  # now word bank is a combination of word bank and five
+            merge(wordbank, fivewordbank))  # now word bank is a combination of word bank and five
         # word bank as one
 
         oldwords = []
@@ -225,7 +230,7 @@ def generalpurpose():
         scrabblewordbank = scrabblewords.read()
         scrabblewordbank = scrabblewordbank.split()
 
-        wordbank = list(merge(wordbank, twowordbank, threewordbank, fourwordbank, fivewordbank, scrabblewordbank))
+        wordbank = list(merge(wordbank, twowordbank, threewordbank, fourwordbank, fivewordbank))
 
         oldwords = []
         for i in wordbank:
@@ -269,6 +274,10 @@ def generalpurpose():
 
 
 def wordtwister():
+    a_count = 0
+    b_count = 0
+    c_count = 0
+
     letters = str(input("input the letters you have, include duplicates: "))
     usedwords = input("input the words you have allready gotten as a list: ")
 
@@ -329,7 +338,8 @@ def wordtwister():
                 scrabblewordbank = scrabblewordbank.split()
 
                 wordbank = list(merge(wordbank, threewordbank, fourwordbank, fivewordbank, scrabblewordbank))  # now
-                # word bank is a combination of word bank and five word bank and the three and four wordbanks and the scrabble word bank
+                # word bank is a combination of word bank and five word bank and the three and four wordbanks and the
+                # scrabble word bank
 
             else:
                 wordbank = open("words.txt", "r")
@@ -383,9 +393,15 @@ def wordtwister():
     print(wordbank)
 
 
-wordgame = int(input("input what word game you are solving\n0 for wordle 1 for general purpose 2 for word twister: "))
+wordgame = int(input("input what word game you are solving\n0 for Wordle 1 for Hangman 2 for Word Twister: "))
 if wordgame == 0:
-    wordlesolver()
+    notletters = (input("input the letters that are not in the word: "))
+    fixedletters = str(input("input the letters that are green, use underscores for the blank spaces and dont put in "
+                             "yellow letters.\n for example o_u_t: "))
+    unfixedletters = str(
+        input("input the yellow letters where they are yellow, use underscores for blank spaces.\n for "
+              "example t_y_e: "))
+    wordlesolver(notletters, fixedletters, unfixedletters)
 elif wordgame == 1:
     generalpurpose()
 elif wordgame == 2:
