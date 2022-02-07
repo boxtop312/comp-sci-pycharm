@@ -1,5 +1,6 @@
 from heapq import merge
 
+
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n|    wellcome to the word guesser   |\n|   only words for words that "
       "are   |\n|        not names or phrases       |\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
@@ -122,7 +123,10 @@ def wordlesolver(notletters, fixedletters, unfixedletters):
                     break
 
     print("length of word bank: " + str(len(wordbank)) + "\n")
-    print(wordbank)
+    for i in range(int(len(wordbank)/9)):
+        for ii in range(0,8):
+            print(wordbank[ii+i], " ", end="")
+        print("")
 
 
 def generalpurpose():
