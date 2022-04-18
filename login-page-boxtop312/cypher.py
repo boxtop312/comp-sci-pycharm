@@ -159,20 +159,20 @@ def vigenere_encrypt(text, key):
     return newtext
 
 
-def vigenere_decrypt(text, key):
-    newtext = ""
-    for x in range(len(text)):
-        x1 = vinegrette_letters[0].index(text[x])
-        for y in range(len(lengthen_key(text, key))):
-            if y > (len(lengthen_key(text, key)) + 1):
-                y *= 0
-            else:
-                if x == y:
-                    y1 = get_collum(vinegrette_letters, 0).index(lengthen_key(text, key)[y])
+def vigenere_decrypt(string, key):
+    string = string.strip()
+    key = key.strip()
+    text = []
+    for i in range(len(string)):
+        g = i
+        if i >= len(key):
+            g = i % len(key)
+        x = (ord(string[i]) - ord(key[g])) % 26
+        x += ord('A')
+        text.append(chr(x))
+    return "".join(text)
 
-    return newtext
 
-
-print(vigenere_decrypt("tig rwidm ctoxp gqxalunrsaqvft ujeana   eqg", "abc"))
+print(vigenere_encrypt("theeaglehaslanded", "america"))
 # cezar_decrypt(str(input("input text: ")), int(input("input how much the text should be shifted\n can be negative or "
 #                                                     "positive but not greater than 24: ")))
