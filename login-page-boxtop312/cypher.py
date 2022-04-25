@@ -106,18 +106,18 @@ def cezar_encrypt(text, shift):
     newtext = ""
     if shift < 0:
         howfar = abs(shift)
-        leftorright = False
+        leftorright = True
     else:
         howfar = shift
-        leftorright = True
+        leftorright = False
     shifted_list = shiftlist(cezar_letters, leftorright, howfar)
     for i in range(len(text)):
         for ii in range(len(cezar_letters)):
-            if text[i].lower() == cezar_letters[ii]:
+            if text[i].upper() == cezar_letters[ii]:
                 newtext += shifted_list[ii]
                 break
-            elif text[i].lower() not in cezar_letters:
-                newtext += text[i].lower()
+            elif text[i].upper() not in cezar_letters:
+                newtext += text[i].upper()
                 break
     print(newtext)
     return newtext
@@ -128,21 +128,21 @@ def cezar_decrypt(text, shift):
     newtext = ""
     if shift < 0:
         howfar = abs(shift)
-        leftorright = False
+        leftorright = True
     else:
         howfar = shift
-        leftorright = True
+        leftorright = False
     shifted_list = shiftlist(cezar_letters, leftorright, howfar)
     for i in range(len(text)):
         for ii in range(len(cezar_letters)):
-            if text[i].lower() == cezar_letters[ii]:
+            if text[i].upper() == cezar_letters[ii]:
                 newtext += shifted_list[ii]
                 break
-            elif text[i].lower() not in cezar_letters:
-                newtext += text[i].lower()
+            elif text[i].upper() not in cezar_letters:
+                newtext += text[i].upper()
                 break
     print(newtext)
-    return newtext
+    return newtext.upper()
 
 
 def vigenere_encrypt(text, key):
@@ -173,6 +173,6 @@ def vigenere_decrypt(string, key):
     return "".join(text)
 
 
-print(vigenere_encrypt("theeaglehaslanded", "america"))
-# cezar_decrypt(str(input("input text: ")), int(input("input how much the text should be shifted\n can be negative or "
-#                                                     "positive but not greater than 24: ")))
+
+cezar_encrypt(str(input("input text: ")), int(input("input how much the text should be shifted\n can be negative or "
+                                                   "positive but not greater than 24: ")))
