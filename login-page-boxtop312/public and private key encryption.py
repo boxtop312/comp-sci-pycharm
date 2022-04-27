@@ -1,10 +1,17 @@
 import random
 
-e = 64049653
-p = 180406337
-q = 385713907
-N = q * p
-T = (p - 1) * (q - 1)
+p = 47
+q = 13
+e = 421
+d = 493
+
+
+def calculate_N(p, q):
+    return q * p
+
+
+def calculate_T(p, q):
+    return (p - 1) * (q - 1)
 
 
 def isprime(x):
@@ -47,10 +54,42 @@ def primes_less_than(n):
     return all_primes
 
 
-for d in primes_less_than(999999999):
-    if (e*d) % T == 1:
-        print(d)
-        break
-    else:
-        print(d, 0)
+def pick_e_d(p, q):
+    # (e*d)%T == 1
+    # ((T+1)/e or d)  = e or d
+    T = calculate_T(p, q)
+    N = calculate_N(p, q)
+    newlist = primes_less_than(T)
+    d_list = []
+    for e in newlist:
+        if not is_coprime(e, T) and not is_coprime(e, N) and e < T:
+            newlist.remove(e)
+    while len(d_list) == 0:
+        e = newlist[random.randint(0, len(newlist))]
+        for d in range(2 * e):
+            if (e * d) % T == 1:
+                d_list.append(d)
+    d = random.choice(d_list)
+    return e, d
 
+
+def encrypt(e, N, letter):
+    return (ord(letter) ** e) % N
+
+
+def encrypt_message(e, N, message):
+    newlist = []
+    for letter in message:
+        newlist.append(encrypt(e, N, letter))
+    return newlist
+
+
+def decrypt(N, d, encletter):
+    return chr((encletter ** d) % N)
+
+
+def decrypt_message(N, d, list):
+    newstr = ""
+    for encletter in list:
+        newstr += decrypt(N, d, encletter)
+    return newstr
