@@ -93,3 +93,6 @@ def decrypt_message(N, d, list):
     for encletter in list:
         newstr += decrypt(N, d, encletter)
     return newstr
+
+
+print(decrypt_message(calculate_N(p, q), d, [467, 244, 332, 262, 540, 383, 467, 313, 543, 448, 32, 568, 448, 304, 383, 467, 244, 332, 262, 540]))
