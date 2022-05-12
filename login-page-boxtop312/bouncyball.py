@@ -157,7 +157,7 @@ class Ball:
 			display.move(self.b, self.deltaX - self.radius*2, self.deltaY)
 
 		# Top - when ball hits the top of the object
-		if bBottom > oTop and bTop < oTop and bLeft < oRight and bRight > oLeft:
+		if bBottom > oTop > bTop and bLeft < oRight and bRight > oLeft:
 			self.deltaY = self.deltaY *-0.5
 			display.move(self.b, self.deltaX, self.deltaY+ self.radius*2)
 
