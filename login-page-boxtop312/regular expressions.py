@@ -5,6 +5,20 @@ import re as re
 f = open("phonebook.txt", "r")
 f = f.read()
 f = f.split()
+z = open("chips.txt", "r")
+z = z.read()
+z = z.split()
 
-for i in f:
-	if re.["a"-"z"] or re.[0-9] or re.["A"-"Z"] not in i:
+
+def firstthing(f):
+	for i in f:
+		if re.search("[a-z]", i):
+			pass
+		else:
+			return False
+
+def secthing(z):
+	for i in z:
+		if re.search("[a0]", i) or re.search("[ab]", i)
+
+print(firstthing("a"))
