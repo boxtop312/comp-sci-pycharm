@@ -17,8 +17,13 @@ def firstthing(f):
 		else:
 			return False
 
-def secthing(z):
-	for i in z:
-		if re.search("[a0]", i) or re.search("[ab]", i)
 
-print(firstthing("a"))
+def secthing(z):
+	newlist = []
+	return re.search("^a(b*)$", z)
+	# 	newlist.append(z)
+	# else:
+	# 	pass
+	# return newlist
+
+print(secthing(f))
